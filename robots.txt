@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://webdebarberiadeprueba.vercel.app/sitemap.xml
