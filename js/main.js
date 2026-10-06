@@ -90,6 +90,117 @@
     closing.classList.add('is-in');
   }
 
+  // ---------- Mazo de cortes ----------
+  const deck = document.querySelector('[data-deck]');
+  if (deck) {
+    const cards = Array.from(deck.querySelectorAll('[data-card]'));
+    const currentEl = document.querySelector('[data-deck-current]');
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let order = cards.map((_, i) => i);
+    let busy = false;
+    document.querySelector('[data-deck-total]').textContent = cards.length;
+
+    // Posición de cada carta en el mazo: 0 arriba, el resto asomando detrás.
+    const STACK = [
+      'translate3d(0, 0, 0) rotate(0deg) scale(1)',
+      'translate3d(18px, -16px, 0) rotate(4deg) scale(.96)',
+      'translate3d(-16px, -28px, 0) rotate(-3.5deg) scale(.92)',
+    ];
+
+    const layout = () => {
+      order.forEach((cardIndex, pos) => {
+        const card = cards[cardIndex];
+        card.dataset.pos = pos;
+        card.style.zIndex = String(cards.length - pos);
+        card.style.transform = STACK[Math.min(pos, STACK.length - 1)];
+        card.style.opacity = pos < STACK.length ? '1' : '0';
+        const hidden = pos !== 0;
+        card.setAttribute('aria-hidden', String(hidden));
+        card.inert = hidden;
+      });
+      currentEl.textContent = order[0] + 1;
+    };
+
+    const fling = (dir) => {
+      if (busy) return;
+      busy = true;
+      const top = cards[order[0]];
+      top.classList.remove('is-dragging');
+      top.style.transform = `translate3d(${dir * 130}%, -40px, 0) rotate(${dir * 18}deg)`;
+      top.style.opacity = '0';
+      setTimeout(() => {
+        order.push(order.shift());
+        // la carta que sale va al fondo sin animar su vuelta
+        top.style.transition = 'none';
+        layout();
+        top.getBoundingClientRect();
+        top.style.transition = '';
+        busy = false;
+      }, reduced ? 0 : 380);
+    };
+
+    const back = () => {
+      if (busy) return;
+      busy = true;
+      const last = cards[order[order.length - 1]];
+      last.style.transition = 'none';
+      last.style.transform = 'translate3d(-130%, -40px, 0) rotate(-18deg)';
+      last.style.opacity = '0';
+      last.style.zIndex = String(cards.length + 1);
+      last.getBoundingClientRect();
+      last.style.transition = '';
+      order.unshift(order.pop());
+      layout();
+      setTimeout(() => { busy = false; }, reduced ? 0 : 380);
+    };
+
+    document.querySelector('[data-deck-next]').addEventListener('click', () => fling(1));
+    document.querySelector('[data-deck-prev]').addEventListener('click', back);
+    deck.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); fling(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); back(); }
+    });
+
+    // Arrastre con dedo o ratón sobre la carta de arriba
+    let startX = 0, startY = 0, dx = 0, startT = 0, dragging = false, decided = false;
+    deck.addEventListener('pointerdown', (e) => {
+      const card = e.target.closest('[data-card]');
+      if (busy || !card || card.dataset.pos !== '0') return;
+      dragging = true; decided = false; dx = 0;
+      startX = e.clientX; startY = e.clientY; startT = performance.now();
+    });
+    window.addEventListener('pointermove', (e) => {
+      if (!dragging) return;
+      const mx = e.clientX - startX, my = e.clientY - startY;
+      if (!decided) {
+        if (Math.abs(mx) < 6 && Math.abs(my) < 6) return;
+        decided = true;
+        // Si el gesto es vertical, dejamos que la página haga scroll.
+        if (Math.abs(my) > Math.abs(mx)) { dragging = false; return; }
+        cards[order[0]].classList.add('is-dragging');
+      }
+      dx = mx;
+      cards[order[0]].style.transform = `translate3d(${dx}px, ${Math.abs(dx) * -0.06}px, 0) rotate(${dx / 18}deg)`;
+    });
+    const end = () => {
+      if (!dragging) return;
+      dragging = false;
+      const top = cards[order[0]];
+      if (!decided) return;
+      const velocity = Math.abs(dx) / Math.max(1, performance.now() - startT);
+      if (Math.abs(dx) > deck.offsetWidth * 0.28 || velocity > 0.6) {
+        fling(dx > 0 ? 1 : -1);
+      } else {
+        top.classList.remove('is-dragging');
+        layout();
+      }
+    };
+    window.addEventListener('pointerup', end);
+    window.addEventListener('pointercancel', end);
+
+    layout();
+  }
+
   // ---------- Reserva ----------
   const dialog = document.getElementById('booking');
   const form = dialog.querySelector('[data-booking-form]');

@@ -92,37 +92,72 @@
 
     <!-- 2 · TRABAJOS -->
     <section class="section section--stone" id="trabajos" aria-labelledby="trabajos-title">
-      <div class="container">
-        <div class="section-head">
+      <div class="container showcase">
+        <div class="showcase__text">
           <h2 id="trabajos-title">Salen así de aquí</h2>
-          <p>Trabajos de esta temporada, sin filtros ni retoques. Cada corte lleva la firma de quien lo hizo.</p>
+          <p>Trabajos de esta temporada, sin filtros ni retoques. Desliza la carta para ver el siguiente corte.</p>
+
         </div>
 
-        <div class="works">
-          <figure class="work work--tall">
-            <img src="assets/img/corte-1.webp" alt="Cliente de perfil con pelo peinado hacia atrás y barba esculpida" width="800" height="1000" loading="lazy">
-            <figcaption><strong>Slick back y barba esculpida</strong><span>Hugo</span></figcaption>
-          </figure>
-          <figure class="work">
-            <img src="assets/img/corte-2.webp" alt="Degradado medio repasado con peine y máquina" width="800" height="1000" loading="lazy">
-            <figcaption><strong>Mid fade a tijera arriba</strong><span>Dani</span></figcaption>
-          </figure>
-          <figure class="work">
-            <img src="assets/img/corte-3.webp" alt="Detalle de nuca con degradado limpio" width="800" height="1000" loading="lazy">
-            <figcaption><strong>Taper en nuca</strong><span>Leo</span></figcaption>
-          </figure>
-          <figure class="work">
-            <img src="assets/img/corte-4.webp" alt="Cliente con barba completa y pelo texturizado" width="800" height="1000" loading="lazy">
-            <figcaption><strong>Texturizado con barba completa</strong><span>Ernesto</span></figcaption>
-          </figure>
-          <figure class="work">
-            <img src="assets/img/corte-5.webp" alt="Degradado bajo visto desde atrás" width="800" height="1000" loading="lazy">
-            <figcaption><strong>Low fade</strong><span>Dani</span></figcaption>
-          </figure>
-          <figure class="work work--tall">
-            <img src="assets/img/corte-6.webp" alt="Corte French crop con laterales degradados" width="800" height="1000" loading="lazy">
-            <figcaption><strong>French crop</strong><span>Leo</span></figcaption>
-          </figure>
+        <div class="deck" data-deck tabindex="0" role="region" aria-roledescription="carrusel" aria-label="Cortes realizados. Usa las flechas del teclado para pasar.">
+          <article class="card" data-card>
+            <img src="assets/img/corte-1.webp" alt="Cliente de perfil con pelo peinado hacia atrás y barba esculpida" width="800" height="1000" draggable="false">
+            <div class="card__body">
+              <h3>Slick back y barba esculpida</h3>
+              <p>Peinado hacia atrás con laterales bajos y barba perfilada a navaja.</p>
+              <p class="card__meta"><span>Por Hugo</span><span>Corte y barba, 36 €</span></p>
+            </div>
+          </article>
+          <article class="card" data-card>
+            <img src="assets/img/corte-2.webp" alt="Degradado medio repasado con peine y máquina" width="800" height="1000" draggable="false" loading="lazy">
+            <div class="card__body">
+              <h3>Mid fade a tijera arriba</h3>
+              <p>Degradado medio a máquina y la parte de arriba trabajada a tijera para que caiga sola.</p>
+              <p class="card__meta"><span>Por Dani</span><span>Degradado, 26 €</span></p>
+            </div>
+          </article>
+          <article class="card" data-card>
+            <img src="assets/img/corte-3.webp" alt="Detalle de nuca con degradado limpio" width="800" height="1000" draggable="false" loading="lazy">
+            <div class="card__body">
+              <h3>Taper en nuca</h3>
+              <p>Nuca rebajada en transición suave, sin línea marcada. Crece limpio durante semanas.</p>
+              <p class="card__meta"><span>Por Leo</span><span>Corte clásico, 24 €</span></p>
+            </div>
+          </article>
+          <article class="card" data-card>
+            <img src="assets/img/corte-4.webp" alt="Cliente con barba completa y pelo texturizado" width="800" height="1000" draggable="false" loading="lazy">
+            <div class="card__body">
+              <h3>Texturizado con barba completa</h3>
+              <p>Volumen arriba con textura y barba larga igualada a tijera.</p>
+              <p class="card__meta"><span>Por Ernesto</span><span>Corte y barba, 36 €</span></p>
+            </div>
+          </article>
+          <article class="card" data-card>
+            <img src="assets/img/corte-5.webp" alt="Degradado bajo visto desde atrás" width="800" height="1000" draggable="false" loading="lazy">
+            <div class="card__body">
+              <h3>Low fade</h3>
+              <p>Degradado bajo que arranca casi desde la piel y sube sin saltos.</p>
+              <p class="card__meta"><span>Por Dani</span><span>Degradado, 26 €</span></p>
+            </div>
+          </article>
+          <article class="card" data-card>
+            <img src="assets/img/corte-6.webp" alt="Corte French crop con laterales degradados" width="800" height="1000" draggable="false" loading="lazy">
+            <div class="card__body">
+              <h3>French crop</h3>
+              <p>Flequillo corto y recto con laterales degradados. Muy poco mantenimiento.</p>
+              <p class="card__meta"><span>Por Leo</span><span>Degradado, 26 €</span></p>
+            </div>
+          </article>
+        </div>
+
+        <div class="deck-controls">
+          <button class="deck-btn" type="button" aria-label="Corte anterior" data-deck-prev>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg>
+          </button>
+          <p class="deck-count" aria-live="polite"><b data-deck-current>1</b> de <span data-deck-total>6</span></p>
+          <button class="deck-btn" type="button" aria-label="Corte siguiente" data-deck-next>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg>
+          </button>
         </div>
       </div>
     </section>
